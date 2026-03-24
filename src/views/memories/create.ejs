@@ -1,0 +1,23 @@
+<div class="auth-container fade-in">
+    <div class="card auth-card">
+        <h2 class="sidebar-title">🎥 Add a New Memory</h2>
+        <p style="margin-bottom: 2rem; color: var(--text-muted);">Share a special moment with everyone! ✨</p>
+        
+        <form action="/memories/create" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Memory Title 🌸</label>
+                <input type="text" id="title" name="title" class="form-control" placeholder="What is this moment?" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="video">Upload Video (MP4/WebM) 🎞️</label>
+                <input type="file" id="video" name="video" class="form-control" accept="video/*" required>
+                <small style="color: var(--text-muted); display: block; margin-top: 5px;">Max file size depends on server limits. Keep it sweet!</small>
+            </div>
+            
+            <button type="submit" class="btn btn-block" style="margin-top: 1rem;">Share Memory 💖</button>
+        </form>
+        
+        <a href="/memories" style="display: block; margin-top: 1.5rem; color: var(--text-muted); text-decoration: none;">← Back to Memories</a>
+    </div>
+</div>

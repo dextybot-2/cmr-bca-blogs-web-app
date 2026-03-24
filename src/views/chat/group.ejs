@@ -1,0 +1,89 @@
+<div class="fade-in">
+    <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+        <a href="/chat" style="text-decoration:none; margin-right: 1.5rem; font-size: 1.5rem;">←</a>
+        <h2 class="sidebar-title" style="margin-bottom: 0;">👥 <%= group.name %></h2>
+    </div>
+
+    <div class="card" style="padding: 0; display: flex; flex-direction: column; height: 70vh; max-height: 600px;">
+        <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+            <% messages.forEach(msg => { %>
+                <div class="message <%= msg.sender_id === user.id ? 'sent' : 'received' %>" 
+                     style="max-width: 80%; padding: 1rem; border-radius: var(--radius-sm); 
+                            background: <%= msg.sender_id === user.id ? 'var(--primary-pink)' : '#f0f0f0' %>; 
+                            color: <%= msg.sender_id === user.id ? 'white' : 'var(--text-main)' %>; 
+                            align-self: <%= msg.sender_id === user.id ? 'flex-end' : 'flex-start' %>;">
+                    <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 0.2rem; opacity: 0.8;">
+                        <%= msg.sender_id === user.id ? 'You' : msg.user_name %>
+                    </div>
+                    <div><%= msg.content %></div>
+                    <div style="font-size: 0.65rem; text-align: right; margin-top: 0.4rem; opacity: 0.7;">
+                        <%= new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <div style="padding: 1.5rem; border-top: 1px solid #EEE; display: flex; gap: 1rem;">
+            <input type="text" id="message-input" class="form-control" placeholder="Type your message here... 🌸" style="border-radius: 50px;">
+            <button id="send-btn" class="btn" style="padding: 0 1.5rem; border-radius: 50px;">Send 🚀</button>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const roomId = "<%= group.id %>";
+    const userId = "<%= user.id %>";
+    const userName = "<%= user.name %>";
+
+    const chatMessages = document.getElementById('chat-messages');
+    const messageInput = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    // Auto-scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    socket.emit('joinRoom', roomId);
+
+    sendBtn.onclick = () => {
+        const message = messageInput.value.trim();
+        if (message) {
+            socket.emit('chatMessage', { roomId, userId, userName, message });
+            messageInput.value = '';
+        }
+    };
+
+    messageInput.onkeypress = (e) => {
+        if (e.key === 'Enter') sendBtn.onclick();
+    };
+
+    socket.on('message', (data) => {
+        const div = document.createElement('div');
+        const isMe = data.userId == userId;
+        
+        div.className = `message ${isMe ? 'sent' : 'received'}`;
+        div.style.maxWidth = '80%';
+        div.style.padding = '1rem';
+        div.style.borderRadius = 'var(--radius-sm)';
+        div.style.background = isMe ? 'var(--primary-pink)' : '#f0f0f0';
+        div.style.color = isMe ? 'white' : 'var(--text-main)';
+        div.style.alignSelf = isMe ? 'flex-end' : 'flex-start';
+        div.style.marginBottom = '1rem';
+
+        const time = new Date(data.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        div.innerHTML = `
+            <div style="font-size: 0.75rem; font-weight: 700; margin-bottom: 0.2rem; opacity: 0.8;">
+                ${isMe ? 'You' : data.userName}
+            </div>
+            <div>${data.content}</div>
+            <div style="font-size: 0.65rem; text-align: right; margin-top: 0.4rem; opacity: 0.7;">
+                ${time}
+            </div>
+        `;
+        
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+</script>

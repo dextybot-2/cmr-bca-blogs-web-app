@@ -1,0 +1,26 @@
+<div class="auth-container">
+    <div class="card auth-card fade-in">
+        <h2>Join the Sweetness 🌸</h2>
+        <% if(error) { %>
+            <p class="error-msg" style="color: var(--hover-pink); margin-bottom: 1rem;"><%= error %></p>
+        <% } %>
+        <form action="/auth/register" method="POST">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="What's your name?" required>
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>Create Password</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-block">Register 💖</button>
+        </form>
+        <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+            Already a member? <a href="/auth/login" style="color: var(--primary-pink); font-weight: 600;">Login here!</a>
+        </p>
+    </div>
+</div>

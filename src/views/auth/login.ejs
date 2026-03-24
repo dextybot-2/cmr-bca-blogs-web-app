@@ -1,0 +1,22 @@
+<div class="auth-container">
+    <div class="card auth-card fade-in">
+        <h2>Welcome Back 💖</h2>
+        <% if(error) { %>
+            <p class="error-msg" style="color: var(--hover-pink); margin-bottom: 1rem;"><%= error %></p>
+        <% } %>
+        <form action="/auth/login" method="POST">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-block">Login 🌸</button>
+        </form>
+        <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+            Don't have an account? <a href="/auth/register" style="color: var(--primary-pink); font-weight: 600;">Join us!</a>
+        </p>
+    </div>
+</div>

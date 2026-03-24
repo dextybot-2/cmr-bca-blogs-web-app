@@ -1,0 +1,86 @@
+<div class="main-grid">
+    <div class="feed-section">
+        <form action="/" method="GET" class="search-bar" style="display: flex; gap: 10px; margin-bottom: 2rem;">
+            <input type="text" name="search" class="form-control" style="border-radius: 50px;" placeholder="Search for sweet stories..." value="<%= search || '' %>">
+            <button type="submit" class="btn" style="padding: 0.5rem 1.5rem;">🔍</button>
+        </form>
+
+        <% if (posts.length > 0) { %>
+            <% posts.forEach(post => { %>
+                <div class="card post-card fade-in">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="badge" style="background: var(--soft-pink); color: var(--primary-pink); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700;"><%= post.category || 'General' %></span>
+                        <span class="post-meta" style="margin-bottom: 0;">⏱️ <%= post.reading_time %> min read</span>
+                    </div>
+                    
+                    <h2 class="post-title"><%= post.title %></h2>
+                    <p class="post-meta">By <strong><%= post.user_name %></strong> • <%= new Date(post.created_at).toLocaleDateString() %></p>
+                    
+                    <% if(post.image) { %>
+                        <img src="/uploads/<%= post.image %>" class="post-image" alt="Post Image">
+                    <% } %>
+                    
+                    <p class="post-content" style="font-size: 1.05rem; color: #555;"><%= post.content %></p>
+                    
+                    <hr style="border: 0; border-top: 1px solid #EEE; margin: 2rem 0;">
+
+                    <div class="post-actions">
+                        <form action="/posts/like" method="POST" style="margin-bottom: 1.5rem;">
+                            <input type="hidden" name="post_id" value="<%= post.id %>">
+                            <button type="submit" class="btn btn-small" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">❤️ <%= post.likes_count %> Likes</button>
+                        </form>
+
+                        <div class="comments-section" style="background: #FAFAFA; padding: 1.5rem; border-radius: 15px;">
+                            <h4 style="margin-top: 0; font-size: 1rem; color: var(--text-main);">✨ Comments</h4>
+                            <div class="comment-list">
+                                <% post.comments.forEach(comment => { %>
+                                    <div class="comment-box" style="background: white; padding: 0.8rem 1rem; border-radius: 12px; margin-bottom: 0.8rem; border: 1px solid #F0F0F0;">
+                                        <strong style="font-size: 0.9rem; color: var(--primary-pink);"><%= comment.user_name %>:</strong>
+                                        <p style="margin: 5px 0; font-size: 0.95rem;"><%= comment.comment %></p>
+                                    </div>
+                                <% }) %>
+                            </div>
+
+                            <% if(user) { %>
+                                <form action="/posts/comment" method="POST" class="comment-form" style="margin-top: 1.5rem; display: flex; gap: 10px;">
+                                    <input type="hidden" name="post_id" value="<%= post.id %>">
+                                    <input type="text" name="comment" class="form-control" style="font-size: 0.9rem;" placeholder="Write a cute comment..." required>
+                                    <button type="submit" class="btn" style="padding: 0.5rem 1.5rem;">Send</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="card" style="text-align: center; padding: 4rem 2rem;">
+                <p style="font-size: 1.2rem; color: var(--text-muted);">No stories found matching your search. 🍰</p>
+                <a href="/" class="btn" style="margin-top: 1rem;">Show All Stories</a>
+            </div>
+        <% } %>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-section card fade-in" style="padding: 1.5rem;">
+            <h3 class="sidebar-title">🍦 Sweet Picks</h3>
+            <div class="sweet-picks-list">
+                <% sweetPicks.forEach(pick => { %>
+                    <a href="/" class="trending-item">
+                        <div style="font-size: 0.95rem; font-weight: 600; margin-bottom: 2px;"><%= pick.title %></div>
+                        <small style="color: var(--text-muted);">❤️ <%= pick.likes_count %> likes</small>
+                    </a>
+                <% }) %>
+            </div>
+        </div>
+
+        <div class="card fade-in" style="background: var(--primary-pink); color: white; padding: 1.5rem; text-align: center;">
+            <h3 style="color: white; margin-top: 0; font-size: 1.2rem;">Join the Club! 🎀</h3>
+            <p style="font-size: 0.9rem; opacity: 0.9;">Share your own sweet moments and connect with others.</p>
+            <% if(!user) { %>
+                <a href="/auth/register" class="btn" style="background: white; color: var(--primary-pink); width: 100%; border-radius: 12px; margin-top: 0.5rem;">Sign Up Now</a>
+            <% } else { %>
+                <a href="/posts/create" class="btn" style="background: white; color: var(--primary-pink); width: 100%; border-radius: 12px; margin-top: 0.5rem;">Create Post</a>
+            <% } %>
+        </div>
+    </aside>
+</div>

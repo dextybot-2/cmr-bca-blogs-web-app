@@ -1,0 +1,8 @@
+node_modules/
+.env
+database.sqlite
+src/public/uploads/videos/*
+src/public/uploads/avatar-*
+src/public/uploads/video-*
+.DS_Store
+*.log

@@ -1,0 +1,27 @@
+<div class="fade-in">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 class="sidebar-title" style="margin-bottom: 0;">🌸 Our Sweet Memories</h2>
+        <% if(user) { %>
+            <a href="/memories/create" class="btn">Add New Memory 🎥</a>
+        <% } %>
+    </div>
+
+    <% if (memories.length === 0) { %>
+        <div class="card" style="text-align: center;">
+            <p>No memories shared yet. Be the first to capture a moment! ✨</p>
+        </div>
+    <% } else { %>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+            <% memories.forEach(memory => { %>
+                <div class="card" style="padding: 1rem;">
+                    <video width="100%" controls style="border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                        <source src="<%= memory.video_path %>" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <h3 style="margin: 0.5rem 0;"><%= memory.title %></h3>
+                    <p class="post-meta">Shared by <%= memory.user_name %> on <%= new Date(memory.created_at).toLocaleDateString() %></p>
+                </div>
+            <% }) %>
+        </div>
+    <% } %>
+</div>

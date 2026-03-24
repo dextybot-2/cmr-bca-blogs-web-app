@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | CMR-BCA BLOGS 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="fade-in">
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/"><h1>CMR-BCA BLOGS 🌸</h1></a>
+        </div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/memories">Memories</a>
+            <% if(user) { %>
+                <a href="/chat">Chat</a>
+                <a href="/user/dashboard">Dashboard</a>
+                <a href="/posts/create">New Post</a>
+                <a href="/auth/logout">Logout</a>
+            <% } else { %>
+                <a href="/auth/login">Login</a>
+                <a href="/auth/register">Register</a>
+            <% } %>
+        </div>
+    </nav>
+
+    <div class="container">
+        <%- body %>
+    </div>
+
+    <footer>
+        <p>Made with 💖 from Jessy and Aishu</p>
+        <p>&copy; 2026 CMR-BCA BLOGS</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>
